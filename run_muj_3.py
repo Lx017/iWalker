@@ -53,6 +53,7 @@ rospy.init_node("mujoco")
 point_cloud_pub = rospy.Publisher('/ptsc', PointCloud2, queue_size=10)
 depth_pub = rospy.Publisher('/camera/depth/image_rect_raw', Image, queue_size=10)
 marker_pub = rospy.Publisher('/muj_marker', Marker, queue_size=10)
+COM_pub = rospy.Publisher('/muj_COM', PointStamped, queue_size=10)
 traj_pub = rospy.Publisher('/muj_traj', Marker, queue_size=10)
 sol_step_pub = rospy.Publisher('/muj_step_solved', PointStamped, queue_size=10)
 mea_step_pub = rospy.Publisher('/muj_step_mea', PointStamped, queue_size=10)
@@ -523,6 +524,8 @@ while viewer.is_alive:
     mujSim.calculate_robot_model(bot,data)
 
 
+
+
     
     if time.time()-sim_launch_time <1.2:
         # reset the robot to the initial position
@@ -602,6 +605,16 @@ while viewer.is_alive:
 
 
     if render:
+
+
+        COM_pos = data.qpos[0:3].copy()
+        COM_point_marker = PointStamped()
+        COM_point_marker.header.stamp = rospy.Time.now()
+        COM_point_marker.header.frame_id = "map"
+        COM_point_marker.point.x = -COM_pos[0]
+        COM_point_marker.point.y = -COM_pos[1]
+        COM_point_marker.point.z = 0
+        COM_pub.publish(COM_point_marker)
         try:
             viewer.render(None)
             near = 0.09416321665048599

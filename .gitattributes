@@ -4,3 +4,7 @@
 *.pt filter=lfs diff=lfs merge=lfs -text
 *.pth filter=lfs diff=lfs merge=lfs -text
 *.bag filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+.mp4 filter=lfs diff=lfs merge=lfs -text
+.bagg filter=lfs diff=lfs merge=lfs -text
+*.bagg filter=lfs diff=lfs merge=lfs -text
