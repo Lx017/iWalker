@@ -46,7 +46,7 @@ contactForceSMArr = shmArr("forceSM", (4,3), np.float32, reset=True)
 contactForceSMArr[0,0]=1234
 dt = 0.002
 SN = SharedNp("shm1.json")
-SN["boffset"][0] = 0#.025
+SN["boffset"][0] = 0.025
 SN["boffset"][1] = 0
 
 rospy.init_node("mujoco")
@@ -77,9 +77,9 @@ def plannerCallback(data):
     waypoints = [[p.x, p.y, p.z] for p in data.markers[1].points]
     waypoints = np.array(waypoints)
     if waypoints[0,1] < 0:
-        YAW_OFFSET -= 0.3
+        YAW_OFFSET += 1
     else:
-        YAW_OFFSET += 0.3
+        YAW_OFFSET -= 1
 iplannerS = rospy.Subscriber("/iplanner_out", MarkerArray, plannerCallback)
 ROT_d = RotMatZ(0.5)
 ROOT_MEA = np.zeros(3)
