@@ -1,0 +1,12 @@
+*.pyc
+*.so
+MUJOCO_LOG.TXT
+contact_est.pt
+left_contact_data.pt
+right_contact_data.pt
+test.pt
+data.zip
+pointScreenshot from 2024-09-05 02-53-06
+*.pt
+*.pth
+*.bag

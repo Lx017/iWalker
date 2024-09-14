@@ -1,0 +1,9 @@
+
+from Library.ROBOT_MODEL.BRUCE_KINEMATICS_AOT import *
+print("BRUCE_KINEMATICS_AOT compiled")
+from Library.ROBOT_MODEL.BRUCE_DYNAMICS_AOT import *
+print("BRUCE_DYNAMICS_AOT compiled")
+from Library.STATE_ESTIMATION.BRUCE_ESTIMATION_CF_AOT import *
+print("BRUCE_ESTIMATION_CF_AOT compiled")
+from Library.STATE_ESTIMATION.BRUCE_ESTIMATION_KF_AOT import *
+print("BRUCE_ESTIMATION_KF_AOT compiled")

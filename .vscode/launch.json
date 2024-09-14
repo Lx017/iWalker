@@ -1,0 +1,77 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+        },{
+            "name": "sudo Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "sudo": true
+        },{
+            "name": "motor test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "motor_ctrl.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+        },
+        {
+            "name": "mujoco",
+            "type": "python",
+            "request": "launch",
+            "program": "run_muj_2222.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": false,
+        },
+        {
+            "name": "jump",
+            "type": "python",
+            "request": "launch",
+            "program": "jump.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": false,
+        },
+        {
+            "name": "controller",
+            "type": "python",
+            "request": "launch",
+            "program": "my_bear.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": false,
+        },
+        {
+            "name": "sim",
+            "type": "python",
+            "request": "launch",
+            "program": "run_sim.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "sudo": true
+        },
+        {
+            "name": "run",
+            "type": "python",
+            "request": "launch",
+            "program": "my_run.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}",
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+numpy
+scipy
+numba
+pyserial
+termcolor
+matplotlib
+osqp
+dynamixel_sdk
+posix_ipc
+mujoco
+imageio

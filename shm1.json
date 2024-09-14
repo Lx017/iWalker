@@ -1,0 +1,10 @@
+{
+    "boffset": "2;float32",
+    "footLoc": "4;float32",
+    "yaw": "1;float32",
+    "ifLeft": "1;float32",
+    "poseOffset": "7;float32",
+    "IMUBodyPos": "3;float32",
+    "IMUBodyRot": "3x3;float32",
+    "RotCorrect": "3x3;float32"
+}
