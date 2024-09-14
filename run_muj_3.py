@@ -46,7 +46,7 @@ contactForceSMArr = shmArr("forceSM", (4,3), np.float32, reset=True)
 contactForceSMArr[0,0]=1234
 dt = 0.002
 SN = SharedNp("shm1.json")
-SN["boffset"][0] = 0.025
+SN["boffset"][0] = 0#.025
 SN["boffset"][1] = 0
 
 rospy.init_node("mujoco")
@@ -605,9 +605,9 @@ while viewer.is_alive:
         try:
             viewer.render(None)
             near = 0.09416321665048599
-            FOVY = 90
+            FOVY = 89
             h = near * np.tan(FOVY / 2 * np.pi / 180)
-            depth, near, far = viewer.render(1,readDepth=True,h=h,shape=(320,180))
+            depth, near, far = viewer.render(1,readDepth=True,h=h,shape=(160,90))
             depth = (near*far)/(near+depth*(far-near)) # restore depth
             depth[depth>10] = 0
             #depth = cv2.GaussianBlur(depth, (41, 41), 0)
@@ -616,12 +616,16 @@ while viewer.is_alive:
             depth_pub.publish(image_msg)
             depth *= (1.0+np.random.randn(depth.size).reshape(depth.shape)*0.02)
             #depth = cv2.GaussianBlur(depth, (21, 21), 0)
-            center_depth =depth[depth.shape[0]//2,depth.shape[1]//2]
+            center_depth = depth[depth.shape[0]//2,depth.shape[1]//2]
 
             #rot = matrix_to_quaternion(data.xmat[1].reshape(3,3).T*np.array([-1,-1,1])[:,None])
+            quat = np.roll(data.qpos[3:7],-1)
+            q_rotation = [0, 0, 1, 0]  # [x, y, z, w]
+            quat = quaternion_multiply(q_rotation,quat)
+            quat=np.array(quat)
             TFbr.sendTransform(
                 data.xpos[1]*np.array([-1,-1,1]),     # translation
-                np.roll(data.qpos[3:7]*np.array([1,-1,-1,1]),-1), # rotation
+                quat, # rotation
                 rospy.Time.now(),
                 'camera',  # child frame
                 'map'  # parent frame
@@ -701,7 +705,7 @@ while viewer.is_alive:
                 ]
 
 
-                points = (np.stack((X, Y, Z), axis=-1)*depth[:,:,None]).reshape(-1, 3)
+                points = (np.stack((-X, Y, -Z), axis=-1)*depth[:,:,None]).reshape(-1, 3)
                 points = ROTC @ points.T
                 points = points.T
                 #points += np.random.randn(points.size).reshape(points.shape)*0.05

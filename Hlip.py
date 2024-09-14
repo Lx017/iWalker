@@ -46,7 +46,7 @@ Ay, By, _ = global_hlip_initialization(height, TSSP, TDSP)
 A = np.block([[Ax, np.zeros((3,3))],[np.zeros((3,3)), Ay]])
 B = np.block([[Bx, np.zeros((3,1))],[np.zeros((3,1)), By]])
 
-N = 50
+N = 150
 
 MPC = OSQPMPC(nx=6,nu=2,N=N,polish=True)
 

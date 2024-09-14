@@ -184,3 +184,24 @@ def calculate_Ky(fovy,height):
     fy = height / (2 * np.tan(fovy_rad / 2))
 
     return fy
+
+def quaternion_multiply(q1, q2):
+    """
+    Multiplies two quaternions in xyzw format.
+
+    Parameters:
+    q1, q2: Lists or arrays of quaternion components [x, y, z, w]
+
+    Returns:
+    A list representing the product quaternion in [x, y, z, w] format.
+    """
+    x1, y1, z1, w1 = q1
+    x2, y2, z2, w2 = q2
+
+    # Quaternion multiplication formula
+    w = w1*w2 - x1*x2 - y1*y2 - z1*z2
+    x = w1*x2 + x1*w2 + y1*z2 - z1*y2
+    y = w1*y2 - x1*z2 + y1*w2 + z1*x2
+    z = w1*z2 + x1*y2 - y1*x2 + z1*w2
+
+    return [x, y, z, w]

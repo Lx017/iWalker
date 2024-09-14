@@ -33,8 +33,14 @@ import tf.transformations as tft
 from sensor_msgs.msg import Image, PointCloud2, PointField
 import sensor_msgs.point_cloud2 as pc2
 MAX_DEPTH = 10
-TRAINING = True
+TRAINING = False
 RECORDING = False
+LR = 1e-6
+IFSIM = True
+recording_dir = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+if RECORDING:
+    os.makedirs("recordings/"+recording_dir)
+START_RECORDING = False
 FPS = 10
 N_STEP = 150 #20
 tar_step_len = 0.01
@@ -47,7 +53,8 @@ GLOBAL_TARGET_POINT = None
 listener = tf.TransformListener()
 SN = SharedNp("shm1.json")
 def Targetcallback(data):
-    global GLOBAL_TARGET_POINT
+    global GLOBAL_TARGET_POINT,START_RECORDING
+    START_RECORDING = True
     GLOBAL_TARGET_POINT = data
     # X = GLOBAL_TARGET_POINT.point.x
     # Y = GLOBAL_TARGET_POINT.point.y
@@ -288,7 +295,7 @@ class iPlannerNode:
             loggingfile = open("log/"+datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")+".txt", "w")
             import time
             from unicycle import Unicycle_MPC
-            path_optimizer = torch.optim.Adam(self.iplanner_algo.net.parameters(), lr=1e-7)
+            path_optimizer = torch.optim.Adam(self.iplanner_algo.net.parameters(), lr=LR)#1e-7
             criterion = nn.MSELoss()
             rec_path = 'recordings'
             self.iplanner_algo.net.train()
@@ -333,7 +340,7 @@ class iPlannerNode:
 
             #K = np.array([426.821533203125, 0.0, 429.42242431640625, 0.0, 426.821533203125, 243.98818969726562, 0.0, 0.0, 1.0]).reshape(3,3)
             K_inv = 1/80 #80 is 160/2, 160 is recorded depth image width
-            K_inv = 0.04444#for sim
+            #K_inv = 0.04444#for sim
 
             point_cloud_pub = rospy.Publisher('/ptsc', PointCloud2, queue_size=10)
             ROT1 = np.array([[0, 0, 1], 
@@ -408,6 +415,8 @@ class iPlannerNode:
                     #data = torch.load(os.path.join(rec_path, dir, file))
                     preds = data['preds'].detach()
                     goal = data['goal'].detach()
+                    if goal[0,0] < 0:
+                        goal[0,0]*=-1
                     depth = data['input']
                     depth[depth==0.8] = 0
                     if not ifTesting:
@@ -771,6 +780,8 @@ class iPlannerNode:
             GLOBAL_TARGET_POINT.header.stamp = rospy.Time(0)
             transformed = listener.transformPoint("camera", GLOBAL_TARGET_POINT).point
             transformed = np.array([transformed.x, transformed.y, transformed.z])
+            # if IFSIM:
+            #     transformed = -
             #print("Transformed point at ", transformed)
             self.goal_rb = torch.tensor([transformed[0], transformed[1], 0], dtype=torch.float32)[None, ...]
         #self.goal_rb = torch.tensor([2, 0, 0], dtype=torch.float32)[None, ...]
@@ -838,7 +849,7 @@ class iPlannerNode:
         if RECORDING:
             data = {"preds": self.preds, "goal": self.goal_rb, "input": cur_image}
             date = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-            torch.save(data, f"recordings/{date}.pt")
+            torch.save(data, f"recordings/{recording_dir}/{date}.pt")
         #self.preds*=-1
         print(SN["ifLeft"])
         # check goal less than coverage range
@@ -965,7 +976,7 @@ class IPlannerAlgo:
 
         #net, _ = torch.load("iplanner/models/plannernet.pt", map_location=torch.device("cpu"))
         net = PlannerNet()
-        net.load_state_dict(torch.load("my.pt"))
+        net.load_state_dict(torch.load("my2.pt"))
         self.net = net.cuda() if torch.cuda.is_available() else net
 
         self.traj_generate = TrajOpt()
