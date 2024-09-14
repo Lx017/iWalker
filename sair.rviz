@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /Grid1
+        - /Grid1/Line Style1
         - /Marker1
         - /Marker2
         - /Marker2/Status1
@@ -30,7 +31,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -39,12 +40,12 @@ Visualization Manager:
   Class: ""
   Displays:
     - Alpha: 0.5
-      Cell Size: 0.5
+      Cell Size: 0.25
       Class: rviz/Grid
-      Color: 160; 160; 164
+      Color: 46; 52; 54
       Enabled: true
       Line Style:
-        Line Width: 0.029999999329447746
+        Line Width: 0.10000000149011612
         Value: Billboards
       Name: Grid
       Normal Cell Count: 0
@@ -73,7 +74,7 @@ Visualization Manager:
       Marker Topic: /muj_marker
       Name: Marker
       Namespaces:
-        points_0: true
+        {}
       Queue Size: 10
       Value: true
     - Alpha: 0.10000000149011612
@@ -109,7 +110,7 @@ Visualization Manager:
       Marker Topic: /iplanner_out
       Name: MarkerArray
       Namespaces:
-        points_0: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Marker
@@ -117,7 +118,7 @@ Visualization Manager:
       Marker Topic: /muj_traj
       Name: Marker
       Namespaces:
-        points_0: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -178,17 +179,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.3968210220336914
-        Y: -1.8034125566482544
-        Z: 4.9229960441589355
+        X: -0.015001118183135986
+        Y: -1.8047810792922974
+        Z: 4.9234089851379395
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7647980451583862
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 5.165233135223389
+      Yaw: 6.2652387619018555
     Saved: ~
 Window Geometry:
   Displays:
@@ -208,5 +209,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 2488
-  X: 712
-  Y: 2187
+  X: 1040
+  Y: 503

@@ -59,17 +59,26 @@ mea_step_pub = rospy.Publisher('/muj_step_mea', PointStamped, queue_size=10)
 TFbr = tf.TransformBroadcaster()
 listener = tf.TransformListener()
 planned_traj = np.zeros((6,3))
-def plannerCallback(data):
-    print("planner")
     # traj = [[p.x, p.y, p.z] for p in data.markers[0].points] #camera frame
     # planned_traj[1:] = traj
-iplannerS = rospy.Subscriber("/iplanner_out", MarkerArray, plannerCallback)
 rate = rospy.Rate(10000)
 
 ROTZ = RotMatZ(90)
 ROT_OFFSET = np.eye(3)
 ROOT_OFFSET = np.array([0.,0.,0.])
 YAW_OFFSET = 0
+
+def plannerCallback(data):
+    global YAW_OFFSET
+    print("planner")
+    steps = [[p.x, p.y, p.z] for p in data.markers[0].points]
+    steps = np.array(steps)
+    center = (steps[20] + steps[21])/2
+    if center[1] < 0:
+        YAW_OFFSET -= 0.5
+    else:
+        YAW_OFFSET += 0.5
+iplannerS = rospy.Subscriber("/iplanner_out", MarkerArray, plannerCallback)
 ROT_d = RotMatZ(0.5)
 ROOT_MEA = np.zeros(3)
 ROTC = ROTZ @ np.array([[1,  0,  0],
@@ -633,12 +642,12 @@ while viewer.is_alive:
             error_dist = np.linalg.norm(COM_error)
             angle_error = np.abs(cross_product)
 
-            if error_dist>0.2 and angle_error<0.5:
-                if cross_product>0.1:
-                    YAW_OFFSET += 0.5
-                elif cross_product<-0.1:
-                    YAW_OFFSET -= 0.5
-                print("YAW", YAW_OFFSET, angle_error)
+            # if error_dist>0.2 and angle_error<0.5:
+            #     if cross_product>0.1:
+            #         YAW_OFFSET += 0.5
+            #     elif cross_product<-0.1:
+            #         YAW_OFFSET -= 0.5
+            #     print("YAW", YAW_OFFSET, angle_error)
             
 
             step_loc = np.array([SN["footLoc"][0],SN["footLoc"][1]])
